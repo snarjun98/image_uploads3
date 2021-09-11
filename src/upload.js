@@ -22,36 +22,29 @@ module.exports.handler= async(event)=>{
         //     console.log("inside jimp fun")
         //       image.resize(parsedBody.x,parsedBody.y)
         //         .getBase64(Jimp.AUTO)
-                    // console.log("inside getBase64 fun")
-                    // const decodeResizedFile=Buffer.from(src.replace(/^data:image\/\w+;base64,/, ""), "base64");
-                    // console.log("decoded file",decodeResizedFile)
-                    //             const params = {
-                    //                 Bucket:BUCKET_NAME,
-                    //                 Key:`images/${new Date().toISOString()}.jpeg`,
-                    //                 Body: decodeResizedFile,
-                    //                 ContentType: "image/jpeg"
-                    //                 };
-                    //                 const uploadResult = await s3.upload(params).promise();
-                    //                 response.body= JSON.stringify({
-                    //                 message:"Upload success",uploadResult
-                    //                 })
+                   
                 
             // })
-            const result = await (Jimp.read(decodedFile)).then((image)=>{
-               image.resize(parsedBody.x,parsedBody.y)
-            }).then((image)=>{
-                return image
+            const result = await Jimp.read(decodedFile).then((image)=>{
+               image.resize(parsedBody.x,parsedBody.y).getBuffer(Jimp.AUTO,function(err,decodeResizedFile){
+                console.log("decoded file",decodeResizedFile)
+                            const params = {
+                                Bucket:BUCKET_NAME,
+                                Key:`images/${new Date().toISOString()}.jpeg`,
+                                Body: decodeResizedFile,
+                                ContentType: "image/jpeg"
+                                };
+                                const uploadResult = await s3.upload(params).promise();
+                                response.body= JSON.stringify({
+                                message:"Upload success",uploadResult
+                                })
+                                console.log(uploadResult)
+                                return uploadResult
+               })
             })
-            const resizedImgbase64 = result.getBase64(Jimp.AUTO,function(err,src){
-                console.log(src)
-                return src
-            })
-            const decodeResizedFile=Buffer.from(resizedImgbase64.replace(/^data:image\/\w+;base64,/, ""), "base64");
-            console.log("Result",result)
-            console.log(decodeResizedFile)
             // const resizedImage = result.getBase64(Jimp.AUTO)
             // console.log(resizedImage);
-            // console.log("result",result)
+             console.log("result",result)
             return response;
             }
         
