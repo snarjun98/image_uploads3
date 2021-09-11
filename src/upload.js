@@ -27,13 +27,14 @@ module.exports.handler= async(event)=>{
                             message:"Upload failed!!!!!",err
                         })
             } 
-        }
+        }else{
               image.resize(parsedBody.x,parsedBody.y)
                 .getBase64(Jimp.MIME_JPEG, function (err, src) {
                   return src;
                 }) 
+                }
             })
-        console.log(resizedFile)    
+        console.log("Resized file",resizedFile)    
         const decodeResizedFile=Buffer.from(resizedFile.replace(/^data:image\/\w+;base64,/, ""), "base64");
                     const params = {
                         Bucket:BUCKET_NAME,
@@ -45,6 +46,7 @@ module.exports.handler= async(event)=>{
                         response.body= JSON.stringify({
                         message:"Upload success",uploadResult
                         })
+                    
      }else{
         const params = {
             Bucket:BUCKET_NAME,
