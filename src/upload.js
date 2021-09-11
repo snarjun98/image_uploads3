@@ -26,7 +26,7 @@ module.exports.handler= async(event)=>{
                 
             // })
             const result = await Jimp.read(decodedFile).then((image)=>{
-               image.resize(parsedBody.x,parsedBody.y).getBuffer(Jimp.AUTO,function(err,decodeResizedFile){
+               image.resize(parsedBody.x,parsedBody.y).getBuffer(Jimp.AUTO,function async(err,decodeResizedFile){
                 console.log("decoded file",decodeResizedFile)
                             const params = {
                                 Bucket:BUCKET_NAME,
