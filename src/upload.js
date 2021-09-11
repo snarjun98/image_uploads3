@@ -35,9 +35,9 @@ module.exports.handler= async(event)=>{
                                     response.body= JSON.stringify({
                                     message:"Upload success",uploadResult
                                     })
-                    return uploadResult
+                    return "uploaded"
                 })
-                return uploadResult
+                return "uploadedddd"
             })
             console.log("upload result",result)
             return response;
