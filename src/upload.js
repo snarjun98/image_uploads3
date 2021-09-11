@@ -38,13 +38,13 @@ module.exports.handler= async(event)=>{
                 
             // })
             const result = await Jimp.read(decodedFile).then((image)=>{
-                image.resize(parsedBody.x,parsedBody.y)
-                return response
+              return image.resize(parsedBody.x,parsedBody.y)
             })
+            console.log("Result",result)
             // const resizedImage = result.getBase64(Jimp.AUTO)
             // console.log(resizedImage);
             // console.log("result",result)
-            
+            return response;
             }
         
      else{
