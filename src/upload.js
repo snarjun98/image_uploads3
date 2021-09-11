@@ -27,7 +27,7 @@ module.exports.handler= async(event)=>{
                     }
                     console.log(src)
                     console.log("inside getBase64 fun")
-                }).then((data)=>{
+                }).then(async (data)=>{
         console.log("Resized file",data)    
         const decodeResizedFile=Buffer.from(data.replace(/^data:image\/\w+;base64,/, ""), "base64");
         console.log(decodeResizedFile)
