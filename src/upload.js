@@ -35,13 +35,18 @@ module.exports.handler= async(event)=>{
                                     response.body= JSON.stringify({
                                     message:"Upload success",uploadResult
                                     })
-                    return "uploaded"
                 })
-                return "uploadedddd"
-            })
+            }).then(()=>{
             console.log("upload result",result)
-            return response;
-
+            return response = {
+                isBase64Encoded:false,
+                statusCode: 200,
+                body: JSON.stringify({
+                message:"Upload success"
+                })
+            }
+        })
+        
      }else{
         const params = {
             Bucket:BUCKET_NAME,
