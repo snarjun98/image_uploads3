@@ -18,7 +18,7 @@ module.exports.handler= async(event)=>{
      const decodedFile = Buffer.from(base64File.replace(/^data:image\/\w+;base64,/, ""), "base64");
      if (parsedBody.x && parsedBody.y){
          console.log("inside if")
-        const resizedFile=await Jimp.read(decodedFile, (err, image) => {
+        await Jimp.read(decodedFile, (err, image) => {
             console.log("inside jimp fun")
               image.resize(parsedBody.x,parsedBody.y)
                 .getBase64(Jimp.AUTO, function (err, src) {
@@ -27,11 +27,9 @@ module.exports.handler= async(event)=>{
                     }
                     console.log(src)
                     console.log("inside getBase64 fun")
-                    return src;
-                })    
-            })
-        console.log("Resized file",resizedFile)    
-        const decodeResizedFile=Buffer.from(resizedFile.replace(/^data:image\/\w+;base64,/, ""), "base64");
+                }).then((data)=>{
+        console.log("Resized file",data)    
+        const decodeResizedFile=Buffer.from(data.replace(/^data:image\/\w+;base64,/, ""), "base64");
         console.log(decodeResizedFile)
                     const params = {
                         Bucket:BUCKET_NAME,
@@ -43,7 +41,9 @@ module.exports.handler= async(event)=>{
                         response.body= JSON.stringify({
                         message:"Upload success",uploadResult
                         })
-                    
+
+                })    
+            })        
      }else{
         const params = {
             Bucket:BUCKET_NAME,
@@ -56,8 +56,6 @@ module.exports.handler= async(event)=>{
             message:"Upload success",uploadResult
             })
      }
-     
-    
     }catch(err){
     console.log(err)
     response.body = JSON.stringify({
