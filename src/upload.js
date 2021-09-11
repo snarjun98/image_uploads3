@@ -28,7 +28,7 @@ module.exports.handler= async(event)=>{
                         })
             } 
         }
-              image.resize(x,y)
+              image.resize(parsedBody.x,parsedBody.y)
                 .getBase64(jimp.MIME_JPEG, function (err, src) {
                   return src;
                 }) 
