@@ -25,8 +25,9 @@ module.exports.handler= async(event)=>{
                     if(err){
                         console.log("error in getBase64")
                     }
+                    console.log(src)
                     console.log("inside getBase64 fun")
-                  return src;
+                    return src;
                 })    
             })
         console.log("Resized file",resizedFile)    
