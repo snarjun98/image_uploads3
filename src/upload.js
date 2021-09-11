@@ -21,23 +21,23 @@ module.exports.handler= async(event)=>{
         const result= await Jimp.read(decodedFile, (err, image) => {
             console.log("inside jimp fun")
               image.resize(parsedBody.x,parsedBody.y)
-                .getBase64(Jimp.AUTO, async(err, src)=>{
-                    console.log("inside getBase64 fun")
-                    const decodeResizedFile=Buffer.from(src.replace(/^data:image\/\w+;base64,/, ""), "base64");
-                    console.log("decoded file",decodeResizedFile)
-                                const params = {
-                                    Bucket:BUCKET_NAME,
-                                    Key:`images/${new Date().toISOString()}.jpeg`,
-                                    Body: decodeResizedFile,
-                                    ContentType: "image/jpeg"
-                                    };
-                                    const uploadResult = await s3.upload(params).promise();
-                                    response.body= JSON.stringify({
-                                    message:"Upload success",uploadResult
-                                    })
-                })
-            }).then(()=>{
-            console.log("upload result",result)
+                .getBase64Async(Jimp.AUTO)
+                    // console.log("inside getBase64 fun")
+                    // const decodeResizedFile=Buffer.from(src.replace(/^data:image\/\w+;base64,/, ""), "base64");
+                    // console.log("decoded file",decodeResizedFile)
+                    //             const params = {
+                    //                 Bucket:BUCKET_NAME,
+                    //                 Key:`images/${new Date().toISOString()}.jpeg`,
+                    //                 Body: decodeResizedFile,
+                    //                 ContentType: "image/jpeg"
+                    //                 };
+                    //                 const uploadResult = await s3.upload(params).promise();
+                    //                 response.body= JSON.stringify({
+                    //                 message:"Upload success",uploadResult
+                    //                 })
+                
+            }).then((image)=>{
+            console.log(image)
             return response = {
                 isBase64Encoded:false,
                 statusCode: 200,
