@@ -27,7 +27,7 @@ module.exports.handler= async(event)=>{
                     console.log("decoded file",decodeResizedFile)
                                 const params = {
                                     Bucket:BUCKET_NAME,
-                                    Key:`images/${new Date().toISOString()}`,
+                                    Key:`images/${new Date().toISOString()}.jpeg`,
                                     Body: decodeResizedFile,
                                     ContentType: "image/jpeg"
                                     };
@@ -37,10 +37,10 @@ module.exports.handler= async(event)=>{
                                     })
                     return uploadResult
                 })
-                console.log("upload result")
-                return response;
+                return uploadResult
             })
-            console.log("returned out")
+            console.log("upload result",result)
+            return response;
 
      }else{
         const params = {
