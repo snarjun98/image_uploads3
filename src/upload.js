@@ -21,28 +21,26 @@ module.exports.handler= async(event)=>{
         await Jimp.read(decodedFile, (err, image) => {
             console.log("inside jimp fun")
               image.resize(parsedBody.x,parsedBody.y)
-                .getBase64(Jimp.AUTO, function (err, src) {
+                .getBase64(Jimp.AUTO, async(err, src)=>{
                     if(err){
                         console.log("error in getBase64")
                     }
                     console.log(src)
                     console.log("inside getBase64 fun")
-                }).then(async (data)=>{
-        console.log("Resized file",data)    
-        const decodeResizedFile=Buffer.from(data.replace(/^data:image\/\w+;base64,/, ""), "base64");
-        console.log(decodeResizedFile)
-                    const params = {
-                        Bucket:BUCKET_NAME,
-                        Key:`images/${new Date().toISOString()}-resized.jpeg`,
-                        Body: decodeResizedFile,
-                        ContentType: "image/jpeg"
-                        };
-                        const uploadResult = await s3.upload(params).promise();
-                        response.body= JSON.stringify({
-                        message:"Upload success",uploadResult
-                        })
-
-                })    
+                    const decodeResizedFile=Buffer.from(src.replace(/^data:image\/\w+;base64,/, ""), "base64");
+                    console.log("decoded file",decodeResizedFile)
+                                const params = {
+                                    Bucket:BUCKET_NAME,
+                                    Key:`images/${new Date().toISOString()}-resized.jpeg`,
+                                    Body: decodeResizedFile,
+                                    ContentType: "image/jpeg"
+                                    };
+                                    const uploadResult = await s3.upload(params).promise();
+                                    response.body= JSON.stringify({
+                                    message:"Upload success",uploadResult
+                                    })
+            
+                })   
             })        
      }else{
         const params = {
