@@ -18,13 +18,13 @@ module.exports.handler= async(event)=>{
      const base64File = parsedBody.file;
      const decodedFile = Buffer.from(base64File.replace(/^data:image\/\w+;base64,/, ""), "base64");
      if (parsedBody.x && parsedBody.y){
-        const resizedFile=Jimp.read(decodedFile, (err, image) => {
+        const resizedFile=await Jimp.read(decodedFile, (err, image) => {
             if (err){
                     return response = {
                         isBase64Encoded:false,
                         statusCode: 502,
                         body: JSON.stringify({
-                            message:"Upload failed",err
+                            message:"Upload failed!!!!!",err
                         })
             } 
         }
