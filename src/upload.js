@@ -20,8 +20,14 @@ module.exports.handler= async(event)=>{
      if (parsedBody.x && parsedBody.y){
         const resizedFile=Jimp.read(decodedFile, (err, image) => {
             if (err){
-                throw new Error(err)
+                    return response = {
+                        isBase64Encoded:false,
+                        statusCode: 500,
+                        body: JSON.stringify({
+                            message:"Upload failed",err
+                        })
             } 
+        }
               image.resize(x,y)
                 .getBase64(jimp.MIME_JPEG, function (err, src) {
                   return src;
