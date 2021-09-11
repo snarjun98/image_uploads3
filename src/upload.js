@@ -23,7 +23,6 @@ module.exports.handler= async(event)=>{
               image.resize(parsedBody.x,parsedBody.y)
                 .getBase64Async(Jimp.AUTO).then((data)=>{
                     console.log(data)
-                    return data
                 })
                     // console.log("inside getBase64 fun")
                     // const decodeResizedFile=Buffer.from(src.replace(/^data:image\/\w+;base64,/, ""), "base64");
@@ -40,7 +39,7 @@ module.exports.handler= async(event)=>{
                     //                 })
                 
             })
-            console.log(result)
+            console.log("result",result)
             return response
             }
         
