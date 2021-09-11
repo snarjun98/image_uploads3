@@ -37,7 +37,7 @@ module.exports.handler= async(event)=>{
                     //                 })
                 
             // })
-            const result = await (Jimp.read(decodedFile).resize(parsedBody.x,parsedBody.y))
+            const result = await (Jimp.read(decodedFile).resize(parsedBody.x,parsedBody.y).getBase64(Jimp.AUTO))
             console.log("Result",result)
             // const resizedImage = result.getBase64(Jimp.AUTO)
             // console.log(resizedImage);
