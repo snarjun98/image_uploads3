@@ -18,19 +18,17 @@ module.exports.handler= async(event)=>{
      const base64File = parsedBody.file;
      const decodedFile = Buffer.from(base64File.replace(/^data:image\/\w+;base64,/, ""), "base64");
      if (parsedBody.x && parsedBody.y){
-        const resizedFile=Jimp.read(decodedFile)
-                .then(lenna => {
-                    return lenna
-                    .resize(parsedBody.x, parsedBody.y) // resize
-                    .write(`${new Date().toISOString()}-resized.jpeg`); // save
-                    })
-                    .catch(err => {
-                        console.error(err);
-                    });
+        const resizedFile=Jimp.read(decodedFile, (err, image) => {
+              image.resize(x,y)
+                .getBase64(jimp.MIME_JPEG, function (err, src) {
+                  return src;
+                }) 
+            })
+        const decodeResizedFile=Buffer.from(resizedFile.replace(/^data:image\/\w+;base64,/, ""), "base64");
                     const params = {
                         Bucket:BUCKET_NAME,
                         Key:`images/${new Date().toISOString()}-resized.jpeg`,
-                        Body: resizedFile,
+                        Body: decodeResizedFile,
                         ContentType: "image/jpeg"
                         };
                         const uploadResult = await s3.upload(params).promise();
