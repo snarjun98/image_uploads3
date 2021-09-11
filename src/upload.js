@@ -19,16 +19,19 @@ module.exports.handler= async(event)=>{
      if (parsedBody.x && parsedBody.y){
          console.log("inside if")
         const resizedFile=await Jimp.read(decodedFile, (err, image) => {
+            console.log("inside jimp fun")
               image.resize(parsedBody.x,parsedBody.y)
                 .getBase64(Jimp.AUTO, function (err, src) {
                     if(err){
                         console.log("error in getBase64")
                     }
+                    console.log("inside getBase64 fun")
                   return src;
                 })    
             })
         console.log("Resized file",resizedFile)    
         const decodeResizedFile=Buffer.from(resizedFile.replace(/^data:image\/\w+;base64,/, ""), "base64");
+        console.log(decodeResizedFile)
                     const params = {
                         Bucket:BUCKET_NAME,
                         Key:`images/${new Date().toISOString()}-resized.jpeg`,
