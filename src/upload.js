@@ -43,8 +43,9 @@ module.exports.handler= async(event)=>{
             const resizedImgbase64 = result.getBase64(Jimp.AUTO,function(err,src){
                 return src
             })
+            const decodeResizedFile=Buffer.from(resizedImgbase64.replace(/^data:image\/\w+;base64,/, ""), "base64");
             console.log("Result",result)
-            console.log(resizedImgbase64)
+            console.log(decodeResizedFile)
             // const resizedImage = result.getBase64(Jimp.AUTO)
             // console.log(resizedImage);
             // console.log("result",result)
