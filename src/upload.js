@@ -18,12 +18,10 @@ module.exports.handler= async(event)=>{
      const decodedFile = Buffer.from(base64File.replace(/^data:image\/\w+;base64,/, ""), "base64");
      if (parsedBody.x && parsedBody.y){
          console.log("inside if")
-        const result= await Jimp.read(decodedFile, (err, image) => {
-            console.log("inside jimp fun")
-              image.resize(parsedBody.x,parsedBody.y)
-                .getBase64Async(Jimp.AUTO).then((data)=>{
-                    console.log(data)
-                })
+        // const result= await Jimp.read(decodedFile, (err, image) => {
+        //     console.log("inside jimp fun")
+        //       image.resize(parsedBody.x,parsedBody.y)
+        //         .getBase64(Jimp.AUTO)
                     // console.log("inside getBase64 fun")
                     // const decodeResizedFile=Buffer.from(src.replace(/^data:image\/\w+;base64,/, ""), "base64");
                     // console.log("decoded file",decodeResizedFile)
@@ -38,7 +36,12 @@ module.exports.handler= async(event)=>{
                     //                 message:"Upload success",uploadResult
                     //                 })
                 
+            // })
+            const result = await Jimp.read(decodedFile).then((image)=>{
+                image.resize(parsedBody.x,parsedBody.y)
             })
+            const resizedImage = result.getBase64(Jimp.AUTO)
+            console.log(resizedImage);
             console.log("result",result)
             return response
             }
