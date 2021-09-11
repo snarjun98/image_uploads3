@@ -4,7 +4,6 @@ var Jimp = require('jimp');
 const BUCKET_NAME = process.env.FILE_UPLOAD_BUCKET_NAME
 
 module.exports.handler= async(event)=>{
-    console.log(event)
 
     const response = {
         isBase64Encoded:false,
@@ -18,8 +17,10 @@ module.exports.handler= async(event)=>{
      const base64File = parsedBody.file;
      const decodedFile = Buffer.from(base64File.replace(/^data:image\/\w+;base64,/, ""), "base64");
      if (parsedBody.x && parsedBody.y){
+         console.log("inside if")
         const resizedFile=await Jimp.read(decodedFile, (err, image) => {
             if (err){
+                console.log("error in resize fun")
                     return response = {
                         isBase64Encoded:false,
                         statusCode: 502,
@@ -30,6 +31,9 @@ module.exports.handler= async(event)=>{
         }else{
               image.resize(parsedBody.x,parsedBody.y)
                 .getBase64(Jimp.MIME_JPEG, function (err, src) {
+                    if(err){
+                        console.log("error in getBase64")
+                    }
                   return src;
                 }) 
                 }
