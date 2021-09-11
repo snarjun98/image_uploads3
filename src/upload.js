@@ -22,7 +22,7 @@ module.exports.handler= async(event)=>{
             if (err){
                     return response = {
                         isBase64Encoded:false,
-                        statusCode: 500,
+                        statusCode: 502,
                         body: JSON.stringify({
                             message:"Upload failed",err
                         })
@@ -33,6 +33,7 @@ module.exports.handler= async(event)=>{
                   return src;
                 }) 
             })
+        console.log(resizedFile)    
         const decodeResizedFile=Buffer.from(resizedFile.replace(/^data:image\/\w+;base64,/, ""), "base64");
                     const params = {
                         Bucket:BUCKET_NAME,
