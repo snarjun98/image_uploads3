@@ -19,6 +19,9 @@ module.exports.handler= async(event)=>{
      const decodedFile = Buffer.from(base64File.replace(/^data:image\/\w+;base64,/, ""), "base64");
      if (parsedBody.x && parsedBody.y){
         const resizedFile=Jimp.read(decodedFile, (err, image) => {
+            if (err){
+                throw new Error(err)
+            } 
               image.resize(x,y)
                 .getBase64(jimp.MIME_JPEG, function (err, src) {
                   return src;
