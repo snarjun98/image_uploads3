@@ -50,6 +50,17 @@ module.exports.handler= async(event)=>{
              console.log("image",image)
              console.log("resizeImage",resizeImage)
              console.log("resizeBuffer",resizeBuffer)
+             const params = {
+                                    Bucket:BUCKET_NAME,
+                                    Key:`images/${new Date().toISOString()}.jpeg`,
+                                    Body: resizeBuffer,
+                                    ContentType: "image/jpeg"
+                                    };
+                                    const uploadResult = await s3.upload(params).promise()
+                                    console.log(uploadResult)
+                                    response.body= JSON.stringify({
+                                    message:"Upload success",uploadResult
+                                    })
             return response;
             }
         
