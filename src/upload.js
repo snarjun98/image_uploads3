@@ -25,26 +25,31 @@ module.exports.handler= async(event)=>{
                    
                 
             // })
-            const result = await Jimp.read(decodedFile).then((image)=>{
-               image.resize(parsedBody.x,parsedBody.y).getBuffer(Jimp.AUTO,async function(err,decodeResizedFile){
-                console.log("decoded file",decodeResizedFile)
-                            const params = {
-                                Bucket:BUCKET_NAME,
-                                Key:`images/${new Date().toISOString()}.jpeg`,
-                                Body: decodeResizedFile,
-                                ContentType: "image/jpeg"
-                                };
-                                const uploadResult = await s3.upload(params).promise();
-                                response.body= JSON.stringify({
-                                message:"Upload success",uploadResult
-                                })
-                                console.log(uploadResult)
-                                return uploadResult
-               })
-            })
+            // const result = await Jimp.read(decodedFile).then((image)=>{
+            //    image.resize(parsedBody.x,parsedBody.y).getBuffer(Jimp.AUTO,async function(err,decodeResizedFile){
+            //     console.log("decoded file",decodeResizedFile)
+            //                 const params = {
+            //                     Bucket:BUCKET_NAME,
+            //                     Key:`images/${new Date().toISOString()}.jpeg`,
+            //                     Body: decodeResizedFile,
+            //                     ContentType: "image/jpeg"
+            //                     };
+            //                     const uploadResult = await s3.upload(params).promise();
+            //                     response.body= JSON.stringify({
+            //                     message:"Upload success",uploadResult
+            //                     })
+            //                     console.log(uploadResult)
+            //                     return uploadResult
+            //    })
+            // })
             // const resizedImage = result.getBase64(Jimp.AUTO)
             // console.log(resizedImage);
-             console.log("result",result)
+            const image = await Jimp.read(decodedFile)
+           const resizeImage= await image.resize(parsedBody.x, parsedBody.y);
+            const resizeBuffer = await resizeImage.getBufferAsync(Jimp.AUTO);
+             console.log("image",image)
+             console.log("resizeImage",resizeImage)
+             console.log("resizeBuffer",resizeBuffer)
             return response;
             }
         
