@@ -60,7 +60,8 @@ module.exports.handler= async(event)=>{
                                     const uploadResult = await s3.upload(params).promise()
                                     console.log(uploadResult)
                                     response.body= JSON.stringify({
-                                    message:"Upload success",uploadResult
+                                    message:"Upload success",
+                                    link: uploadResult.Location
                                     })   
             return response;
             }
@@ -74,7 +75,8 @@ module.exports.handler= async(event)=>{
             };
             const uploadResult = await s3.upload(params).promise();
             response.body= JSON.stringify({
-            message:"Upload success",uploadResult
+            message:"Upload success",
+            link: uploadResult.Location
             })
             return response;
      }
